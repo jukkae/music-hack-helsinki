@@ -18,6 +18,12 @@ TagReader           tagReader;
 StringList          activeTags;
 int                 elapsedFrames;
 
+// The unique id's for our tags
+// We can check with activeTags.hasValue(blueTagId) for example
+final String        blueTagId = "3D0061B5A8";
+final String        yellowTagId = "3D0061DA1B";
+final String        redTagId = "3C00CE2C49";
+
 // global sequencer variables
 int bpm;
 float quarterNoteLength; // Length of a quarter note in ms
