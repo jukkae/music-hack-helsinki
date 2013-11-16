@@ -11,7 +11,7 @@ class KickInstrument implements Instrument
   KickInstrument( Summer output )
   {
     out = output;
-    sineOsc = new Oscil(100.f, 0.2f, Waves.SINE);
+    sineOsc = new Oscil(100.f, 0.4f, Waves.SINE);
     freqLine = new Line( 0.08f, 200.f, 5.0f );
     
     // patch the line to the frequency of the osc

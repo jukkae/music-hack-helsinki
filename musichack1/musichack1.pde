@@ -9,7 +9,8 @@ import ddf.minim.effects.*;
 
 Minim               minim;
 AudioOutput         out;
-Oscil               wave1, wave2, wave3;
+public Oscil        wave1, wave2, wave3;
+Oscil               fm;
 KickInstrument      kick;
 LowPassSP           lpf;
 Summer              lineMixer, mixer;
@@ -52,6 +53,9 @@ void setup()
   wave2 = new Oscil( 440, 0.2f, Waves.SAW );
   wave3 = new Oscil( 440, 0.2f, Waves.SAW );
   
+  // FM oscillator
+  fm = new Oscil( 440, 0.5f, Waves.SINE );
+  
   // create a line mixer for oscillators
   lineMixer = new Summer();
   
@@ -67,14 +71,20 @@ void setup()
   
   // patch everything together
   wave1.patch( lineMixer );
-  wave2.patch( lineMixer );
-  wave3.patch( lineMixer );
-  
+  // waves 2 & 3 disabled for the time being!
+//  wave2.patch( lineMixer );
+//  wave3.patch( lineMixer );
+
   lineMixer.patch( lpf );
   
   lpf.patch( mixer );
   
   mixer.patch( out );
+  
+  
+  // patch FM
+  fm.offset.setLastValue(440);
+  fm.patch(wave1.frequency);
   
   
   // SEQUENCER VARIABLES
@@ -89,10 +99,12 @@ void setup()
   beat = 0;
   beatTriggered = false;
   
+  
   // Initialize the tagReader
   
   tagReader = new TagReader();
   tagReader.init(this, "/dev/tty.usbserial-AH013H15");
+  
 }
 
 void mouseMoved()
@@ -103,10 +115,18 @@ void mouseMoved()
   float freq2 = convertNoteToFreq((note+3)%7);
   float freq3 = convertNoteToFreq((note+5)%7);
   
-  lpf.setFreq(cutoff);
+  //lpf.setFreq(cutoff);
   wave1.setFrequency(freq1);
   wave2.setFrequency(freq2);
   wave3.setFrequency(freq3);
+  
+  float modAmt = map( mouseY, 0, height, 2200, 1 );
+  float modFreq = map( mouseX, 0, width, 50, 1000 );
+  
+  fm.setAmplitude(modAmt);
+  fm.setFrequency(modFreq);
+  fm.offset.setLastValue(freq1);
+  wave1.setFrequency(freq1);
 }
 
 
@@ -163,6 +183,7 @@ void draw()
     tagReader.pollTags();
     activeTags = tagReader.getActiveTags();
   }
+
   
   // draw the waveforms
   for(int i = 0; i < out.bufferSize() - 1; i++)
@@ -179,17 +200,33 @@ void draw()
     beat = (beat+1) % 16;
     beatTriggered = false;
     
-    if(beat%2==0)kick.noteOn(0.1);
-    else kick.noteOff();
+    if(beat%2==0){
+      kick.noteOn(0.1);
+      
+    }
+    else{
+      kick.noteOff();
+      
+    }
+    
+    // Change frequency of main oscillator & FM oscillator
+    if((beat+1)%4 == 0){
+      wave1.setFrequency(110.0f);
+      fm.offset.setLastValue(110.0f);
+    }
+    else{
+      wave1.setFrequency(220.0f);
+     fm.offset.setLastValue(220.0f);
+    }
+    
   }
 
 
   
+  elapsedFrames += 1;
   
   // texts for testing
   text(beat, width-400, height-120);
   text(clock, width-300, height-120);
   text(frameRate, width-120, height-120);
-  
-  elapsedFrames += 1;
 }
