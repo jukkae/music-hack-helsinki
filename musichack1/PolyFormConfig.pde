@@ -11,117 +11,118 @@
 
 public class PolyFormConfig
 {
-	int recursionDepth;
+  int recursionDepth;
 
-	float origoX;
-	float origoY;
+  float origoX;
+  float origoY;
 
-	float radius;
-	float childRadiusRatio;
+  float radius;
+  float childRadiusRatio;
 
-	float angleOffset;
+  float angleOffset;
 
-	int numPoints;
-	float childNumPointsRatio;
-	float childNumPointsFixed;
+  int numPoints;
+  float childNumPointsRatio;
+  float childNumPointsFixed;
 
-	float lineWeight;
-	float strokeRatio;
+  float lineWeight;
+  float strokeRatio;
 
-	int strokeCap;
-	int strokeJoin;
-	int lineColor;
-	int pointColor;
-	int fillColor;
-	int strokeColor;
-	int opacity;
+  int strokeCap;
+  int strokeJoin;
+  int lineColor;
+  int pointColor;
+  int fillColor;
+  int strokeColor;
+  int opacity;
 
-	boolean drawPoints;
-	boolean fillPoints;
-	boolean fillShape;
-	boolean drawBase;
-	boolean drawStroke;
-	boolean drawLines;
+  boolean drawPoints;
+  boolean fillPoints;
+  boolean fillShape;
+  boolean drawBase;
+  boolean drawStroke;
+  boolean drawLines;
 
-	float pointRadius;
-	float pointRadiusRatio;
+  float pointRadius;
+  float pointRadiusRatio;
 
-	PolyFormConfig() {
-		// Default values
-		origoX = (float)GeoKoneGlobals.DEF_CANVAS_WIDTH/2;
-		origoY = (float)GeoKoneGlobals.DEF_CANVAS_HEIGHT/2;
+  PolyFormConfig() {
+    // Default values
+    origoX = (float)GeoKoneGlobals.DEF_CANVAS_WIDTH/2;
+    origoY = (float)GeoKoneGlobals.DEF_CANVAS_HEIGHT/2;
 
-		lineColor = GeoKoneColors.COLOR_WHITE;
-		strokeColor = GeoKoneColors.COLOR_YELLOW;
-		pointColor = GeoKoneColors.COLOR_WHITE;
-		fillColor = GeoKoneColors.COLOR_WHITE;
-		opacity = GeoKoneColors.OPACITY_OPAQUE;
+    lineColor = GeoKoneColors.COLOR_WHITE;
+    strokeColor = GeoKoneColors.COLOR_YELLOW;
+    pointColor = GeoKoneColors.COLOR_WHITE;
+    fillColor = GeoKoneColors.COLOR_WHITE;
+    opacity = GeoKoneColors.OPACITY_OPAQUE;
 
-		numPoints = 3;
-		childNumPointsRatio = 1;
-		childNumPointsFixed = 0;
+    numPoints = 3;
+    childNumPointsRatio = 1;
+    childNumPointsFixed = 0;
 
-		recursionDepth = 1;
+    recursionDepth = 1;
 
-		radius = 64;
-		childRadiusRatio = 1.0f;
+    radius = 64;
+    childRadiusRatio = 1.0f;
 
-		pointRadiusRatio = GeoKoneGlobals.GOLDEN_RATIO * 8;
-		pointRadius = radius / pointRadiusRatio;
+    pointRadiusRatio = GeoKoneGlobals.GOLDEN_RATIO * 8;
+    pointRadius = radius / pointRadiusRatio;
 
-		angleOffset = 60.0f;
+    angleOffset = 60.0f;
 
-		lineWeight = 1.0f;
-		strokeJoin = GeoKoneGlobals.STROKE_JOIN_MITER;
-		strokeCap = GeoKoneGlobals.STROKE_CAP_SQUARE;
-		strokeRatio = GeoKoneGlobals.GOLDEN_RATIO * 2;
+    lineWeight = 1.0f;
+    strokeJoin = GeoKoneGlobals.STROKE_JOIN_MITER;
+    strokeCap = GeoKoneGlobals.STROKE_CAP_SQUARE;
+    strokeRatio = GeoKoneGlobals.GOLDEN_RATIO * 2;
 
-		drawPoints = false;
-		fillPoints = true;
-		fillShape = false;
-		drawBase = false;
-		drawStroke = false;
-		drawLines = true;
-	}
+    drawPoints = false;
+    fillPoints = true;
+    fillShape = false;
+    drawBase = false;
+    drawStroke = false;
+    drawLines = true;
+  }
 
-	// Copy from existing config
-	// This is called currently everytime some config parameter
-	// is changed
-	PolyFormConfig(PolyFormConfig config) {
-		// Set some default values
-		origoX = config.origoX;
-		origoY = config.origoY;
+  // Copy from existing config
+  // This is called currently everytime some config parameter
+  // is changed
+  PolyFormConfig(PolyFormConfig config) {
+    // Set some default values
+    origoX = config.origoX;
+    origoY = config.origoY;
 
-		lineColor = config.lineColor;
-		pointColor = config.pointColor;
-		fillColor = config.fillColor;
-		strokeColor = config.strokeColor;
-		opacity = config.opacity;
+    lineColor = config.lineColor;
+    pointColor = config.pointColor;
+    fillColor = config.fillColor;
+    strokeColor = config.strokeColor;
+    opacity = config.opacity;
 
-		numPoints = config.numPoints;
-		childNumPointsRatio = config.childNumPointsRatio;
-		childNumPointsFixed = config.childNumPointsFixed;
+    numPoints = config.numPoints;
+    childNumPointsRatio = config.childNumPointsRatio;
+    childNumPointsFixed = config.childNumPointsFixed;
 
-		recursionDepth = config.recursionDepth;
-		pointRadius = config.pointRadius;
+    recursionDepth = config.recursionDepth;
+    pointRadius = config.pointRadius;
 
-		radius = config.radius;
-		childRadiusRatio = config.childRadiusRatio;
+    radius = config.radius;
+    childRadiusRatio = config.childRadiusRatio;
 
-		angleOffset = config.angleOffset;
+    angleOffset = config.angleOffset;
 
-		lineWeight = config.lineWeight;
-		strokeRatio = config.strokeRatio;
-		strokeCap = config.strokeCap;
-		strokeJoin = config.strokeJoin;
+    lineWeight = config.lineWeight;
+    strokeRatio = config.strokeRatio;
+    strokeCap = config.strokeCap;
+    strokeJoin = config.strokeJoin;
 
-		drawPoints = config.drawPoints;
-		fillPoints = config.fillPoints;
-		fillShape = config.fillShape;
-		drawBase = config.drawBase;
-		drawStroke = config.drawStroke;
-		drawLines = config.drawLines;
+    drawPoints = config.drawPoints;
+    fillPoints = config.fillPoints;
+    fillShape = config.fillShape;
+    drawBase = config.drawBase;
+    drawStroke = config.drawStroke;
+    drawLines = config.drawLines;
 
-		pointRadiusRatio = config.pointRadiusRatio;
-	}
+    pointRadiusRatio = config.pointRadiusRatio;
+  }
 }
+
