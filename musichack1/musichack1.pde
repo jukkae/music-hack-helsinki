@@ -14,6 +14,7 @@ Oscil               fm;
 KickInstrument      kick;
 LowPassSP           lpf;
 Summer              lineMixer, mixer;
+BassLine            bassline;
 
 TagReader           tagReader;
 StringList          activeTags;
@@ -67,7 +68,9 @@ void setup()
   
   // create a kick drum
   kick = new KickInstrument( mixer );
-  
+    
+  //bassline
+  bassline = new BassLine();
   
   // patch everything together
   wave1.patch( lineMixer );
@@ -75,7 +78,8 @@ void setup()
 //  wave2.patch( lineMixer );
 //  wave3.patch( lineMixer );
 
-  lineMixer.patch( lpf );
+  //lineMixer.patch( lpf );
+
   
   lpf.patch( mixer );
   
@@ -102,8 +106,8 @@ void setup()
   
   // Initialize the tagReader
   
-  tagReader = new TagReader();
-  tagReader.init(this, "/dev/tty.usbserial-AH013H15");
+  //tagReader = new TagReader();
+  //tagReader.init(this, "/dev/tty.usbserial-AH013H15");
   
 }
 
@@ -179,10 +183,10 @@ void draw()
   stroke(255);
   
   // Poll the tags, only every 16 frames so that the reader doesn't get stuck
-  if ((elapsedFrames % 16) == 0) {
+  /*if ((elapsedFrames % 16) == 0) {
     tagReader.pollTags();
     activeTags = tagReader.getActiveTags();
-  }
+  }*/
 
   
   // draw the waveforms
@@ -213,17 +217,19 @@ void draw()
     if((beat+1)%4 == 0){
       wave1.setFrequency(110.0f);
       fm.offset.setLastValue(110.0f);
+      bassline.noteOn(1.0f);
     }
     else{
       wave1.setFrequency(220.0f);
      fm.offset.setLastValue(220.0f);
+     bassline.noteOff();
     }
     
   }
 
 
   
-  elapsedFrames += 1;
+  //elapsedFrames += 1;
   
   // texts for testing
   text(beat, width-400, height-120);
