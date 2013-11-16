@@ -124,12 +124,12 @@ void mouseMoved()
   wave2.setFrequency(freq2);
   wave3.setFrequency(freq3);
   
-  float modAmt = map( mouseY, 0, height, 2200, 1 );
-  float modFreq = map( mouseX, 0, width, 50, 1000 );
+  float modAmt = map( mouseY, 0, height, 220, 1 );
+  float modFreq = map( mouseX, 0, width, 200, 1000 );
   
-  fm.setAmplitude(modAmt);
-  fm.setFrequency(modFreq);
-  fm.offset.setLastValue(freq1);
+  bassline.fm.setAmplitude(modAmt);
+  bassline.fm.setFrequency(modFreq);
+  bassline.fm.offset.setLastValue(freq1);
   wave1.setFrequency(freq1);
 }
 
@@ -217,12 +217,68 @@ void draw()
     if((beat+1)%4 == 0){
       wave1.setFrequency(110.0f);
       fm.offset.setLastValue(110.0f);
-      bassline.noteOn(1.0f);
     }
     else{
       wave1.setFrequency(220.0f);
      fm.offset.setLastValue(220.0f);
-     bassline.noteOff();
+    }
+    
+    
+    //BASSLINE
+    //ugly implementation just to test, sorry
+    switch(beat){
+      case 0:
+        bassline.setFreq(convertNoteToFreq(0));
+        bassline.noteOn(1.0f);
+        break;
+      case 1:
+        bassline.noteOff();
+        break;
+      case 2:
+        bassline.setFreq(convertNoteToFreq(4));
+        bassline.noteOn(1.0f);
+        break;
+      case 3:
+        bassline.setFreq(convertNoteToFreq(5));
+        bassline.noteOn(1.0f);
+        break;
+      case 4:
+        bassline.noteOff();
+        break;
+      case 5:
+        bassline.setFreq(convertNoteToFreq(3));
+        bassline.noteOn(1.0f);
+        break;
+      case 6:
+        bassline.setFreq(convertNoteToFreq(4));
+        bassline.noteOn(1.0f);
+        break;
+      case 7:
+        bassline.noteOff();
+        break;
+      case 8:
+        bassline.setFreq(convertNoteToFreq(0));
+        bassline.noteOn(1.0f);
+        break;
+      case 9:
+        bassline.noteOff();
+        break;
+      case 10:
+        break;
+      case 11:
+        break;
+      case 12:
+      
+        break;
+      case 13:
+      
+        break;
+      case 14:
+      
+        break;
+      case 15:
+      
+        break;
     }
     
   }
