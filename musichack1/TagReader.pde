@@ -11,20 +11,14 @@ class TagReader {
 
   StringList activeTags;
 
-  /*
-  void setup() {
-    initSerialReader();
-  }
-
-  void draw() {
-    readTags();
-    delay(100);
-  }
-  */
-
   void init(musichack1 parent, String deviceStr) {
     activeTags = new StringList();
-    serialPort = new Serial(parent, deviceStr, SERIAL_BAUD_RATE);
+    try {
+      serialPort = new Serial(parent, deviceStr, SERIAL_BAUD_RATE);
+    } catch (RuntimeException e) {
+      println("Serial device " + deviceStr + " not found!");
+      serialPort = null;
+    }
   }
 
   int asciiToHex(int val) {
@@ -99,6 +93,10 @@ class TagReader {
     int checksum = 0;
     int low_byte = 0;
     int [] tag_code;
+    
+    if (serialPort == null) {
+      return;
+    }
 
     // Tag code is a 5 number array
     // We add these codes to our activeTags array
