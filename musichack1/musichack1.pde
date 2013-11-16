@@ -20,6 +20,8 @@ TagReader           tagReader;
 StringList          activeTags;
 int                 elapsedFrames;
 
+Visualizer          vis;
+
 // The unique id's for our tags
 // We can check with activeTags.hasValue(blueTagId) for example
 final String        blueTagId = "3D0061B5A8";
@@ -39,8 +41,8 @@ boolean beatTriggered; // trigger each beat once
 void setup()
 {
   // GENERAL PROCESSING VARIABLES
-  size(512, 512, P3D);
-  frameRate(120);
+  size(GeoKoneGlobals.DEF_CANVAS_WIDTH, GeoKoneGlobals.DEF_CANVAS_HEIGHT, P3D);
+  frameRate(60);
   
   
   // MINIM INFRASTRUCTURE
@@ -109,6 +111,9 @@ void setup()
   tagReader = new TagReader();
   tagReader.init(this, "/dev/tty.usbserial-AH013H15");
   
+  // Visualizer
+  vis = new Visualizer();
+  vis.init(this, GeoKoneGlobals.DEF_CANVAS_WIDTH, GeoKoneGlobals.DEF_CANVAS_HEIGHT);
 }
 
 void mouseMoved()
@@ -187,15 +192,6 @@ void draw()
     tagReader.pollTags();
     activeTags = tagReader.getActiveTags();
   }
-
-  
-  // draw the waveforms
-  for(int i = 0; i < out.bufferSize() - 1; i++)
-  {
-    line( i, 50 + out.left.get(i)*50, i+1, 50 + out.left.get(i+1)*50 );
-    line( i, 150 + out.right.get(i)*50, i+1, 150 + out.right.get(i+1)*50 );
-  }
-  
   
   // MOVE SEQUENCER
     if ( millis() - clock >= quarterNoteLength )
@@ -283,7 +279,7 @@ void draw()
     
   }
 
-
+  vis.doDraw(beat, elapsedFrames, out);
   
   elapsedFrames += 1;
   
