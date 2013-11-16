@@ -98,7 +98,7 @@ void setup()
   
   // Visualizer
   vis = new Visualizer();
-  vis.init(this, GeoKoneGlobals.DEF_CANVAS_WIDTH, GeoKoneGlobals.DEF_CANVAS_HEIGHT);
+  vis.init(this, out, GeoKoneGlobals.DEF_CANVAS_WIDTH, GeoKoneGlobals.DEF_CANVAS_HEIGHT);
 }
 
 //fills the bassline notes with random values
@@ -207,7 +207,7 @@ void draw()
     
   }
 
-  vis.doDraw(beat, elapsedFrames, out);
+  vis.doDraw(beat, elapsedFrames);
   
   elapsedFrames += 1;
   
