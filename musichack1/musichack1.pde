@@ -106,8 +106,8 @@ void setup()
   
   // Initialize the tagReader
   
-  //tagReader = new TagReader();
-  //tagReader.init(this, "/dev/tty.usbserial-AH013H15");
+  tagReader = new TagReader();
+  tagReader.init(this, "/dev/tty.usbserial-AH013H15");
   
 }
 
@@ -183,10 +183,10 @@ void draw()
   stroke(255);
   
   // Poll the tags, only every 16 frames so that the reader doesn't get stuck
-  /*if ((elapsedFrames % 16) == 0) {
+  if ((elapsedFrames % 16) == 0) {
     tagReader.pollTags();
     activeTags = tagReader.getActiveTags();
-  }*/
+  }
 
   
   // draw the waveforms
@@ -229,7 +229,7 @@ void draw()
 
 
   
-  //elapsedFrames += 1;
+  elapsedFrames += 1;
   
   // texts for testing
   text(beat, width-400, height-120);
