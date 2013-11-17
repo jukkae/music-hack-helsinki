@@ -73,12 +73,10 @@ class Visualizer {
   
   void drawPoly(int beat) {
     //float radius = (8 * beat+16) + ((float)PApplet.sin(elapsedFrames / 512.0)) * 32.0;
-    float childRatio = (0.025 * beat+1) + ((float)PApplet.cos(elapsedFrames / 256.0) * (float)PApplet.sin(elapsedFrames/128.0)) * 0.618;
+    float childRatio = (0.025 * beat+1) + ((float)PApplet.cos(elapsedFrames / 256.0) * (float)PApplet.sin(elapsedFrames/128.0)) * 0.618 * (modAmt / 100.0);
     float angle = ((float)PApplet.cos(elapsedFrames / 256.0)) * 128.0;
     float radius = 32.0 + (screenWidth / modAmt)/4.0;
-    
-    println(modAmt);
-    
+        
     poly.setAngleOffset(angle);
     //poly.setRadius(radius);
     poly.setChildRadiusRatio(childRatio);
