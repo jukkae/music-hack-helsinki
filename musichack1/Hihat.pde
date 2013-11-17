@@ -18,7 +18,7 @@ class Hihat implements Instrument
   Hihat( Summer output )
   {
     out = output;
-    noise = new Noise(0.1);
+    noise = new Noise(0.05);
     gate = new Multiplier(0);
     adsr = new ADSR(1.0f, 0.01f, 0.05f);
     

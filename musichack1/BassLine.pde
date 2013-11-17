@@ -7,7 +7,7 @@ import ddf.minim.effects.*;
 class BassLine implements Instrument
 {
   
-  Oscil wave1, wave2, sub;
+  Oscil wave1, wave2, sub, subsub;
   Oscil fm;
   Summer linemix, submix;
   Multiplier gate;
@@ -20,9 +20,10 @@ class BassLine implements Instrument
   
   
   BassLine(Summer out){
-    wave1 = new Oscil(110.0f, 1.0f, Waves.SINE);
-    wave2 = new Oscil(220.5f, 0.5f, Waves.SINE);
-    sub = new Oscil(55.0f, 1.0f, Waves.TRIANGLE);
+    wave1 = new Oscil(110.0f, 0.8f, Waves.SINE);
+    wave2 = new Oscil(220.5f, 0.3f, Waves.SINE);
+    sub = new Oscil(55.0f, 0.7f, Waves.TRIANGLE);
+    subsub = new Oscil(22.5f, 0.7f, Waves.SINE);
     fm = new Oscil( 110, 0.5f, Waves.SINE );
     fm.offset.setLastValue(110);
     fm.patch(wave1.frequency);
@@ -40,6 +41,7 @@ class BassLine implements Instrument
     wave1.patch(linemix);
     wave2.patch(linemix);
     sub.patch(submix);
+    subsub.patch(submix);
     linemix.patch(shaper);
     shaper.patch(submix);
     submix.patch(gate);
@@ -56,6 +58,7 @@ class BassLine implements Instrument
     wave1.setFrequency(freq);
     wave2.setFrequency(2*freq+1);
     sub.setFrequency(freq/2);
+    subsub.setFrequency(freq/4);
     fm.offset.setLastValue(freq);
   }
   

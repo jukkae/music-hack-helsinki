@@ -20,10 +20,10 @@ class Pad implements Instrument
   
   Pad( Summer output ){
     out = output;
-    pwm1 = new Oscil(220.0f, 0.08, Waves.SQUARE);
-    pwm2 = new Oscil(261.62f, 0.06, Waves.SQUARE);
-    pwm3 = new Oscil(329.62f, 0.04, Waves.SQUARE);
-    lpf = new LowPassSP(160.0f, 44100);
+    pwm1 = new Oscil(220.0f, 0.04, Waves.SQUARE);
+    pwm2 = new Oscil(261.62f, 0.03, Waves.SQUARE);
+    pwm3 = new Oscil(329.62f, 0.02, Waves.SQUARE);
+    lpf = new LowPassSP(100.0f, 44100);
     delay = new Delay(0.227, 0.7, true, true);    
     lineMix = new Summer();
     gate = new Multiplier(1.0f);

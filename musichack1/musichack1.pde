@@ -41,6 +41,8 @@ int[] basslineNotes; // notes for bassline
 boolean[] basslineGates; // booleans for whether or not note is played on bass
 boolean[] hihatPattern; // booleans for hihat pattern
 
+PenroseLSystem ds;
+
 void setup()
 {
   // GENERAL PROCESSING VARIABLES
@@ -117,6 +119,11 @@ void setup()
   // Visualizer
   vis = new Visualizer();
   vis.init(this, out, GeoKoneGlobals.DEF_CANVAS_WIDTH, GeoKoneGlobals.DEF_CANVAS_HEIGHT);
+  
+  //Penrose
+  
+  ds = new PenroseLSystem();
+  ds.simulate(4);
 }
  
 //fills the bassline notes with random values
@@ -248,8 +255,12 @@ void setPolyColor() {
 
 void draw()
 {
+  
   background(0);
   stroke(255);
+  
+  
+  
   
   // Poll the tags, only every 16 frames so that the reader doesn't get stuck
   if ((elapsedFrames % 16) == 0) {
@@ -306,12 +317,16 @@ void draw()
     }
     
     if ( sixteenth % (numberOfSteps*4)==(numberOfSteps*4-1) ){
-      makeNewHihats();      
+      makeNewHihats();
+      ds.simulate(4);
     }
     
-        sixteenth = (sixteenth+1) % (4*numberOfSteps);
-
+        
   }
+         sixteenth = (sixteenth+1) % (4*numberOfSteps);
+         camera((mouseX), (mouseY), 300, // eyeX, eyeY, eyeZ
+         width/2.0, height/2.0, 0.0, // centerX, centerY, centerZ
+         0.0, 1.0, 0.0); // upX, upY, upZ
 
   setPolyColor();
   vis.doDraw(beat, elapsedFrames);
@@ -331,6 +346,8 @@ void draw()
   text(beat, width-400, height-120);
   text(clock, width-300, height-120);
   text(frameRate, width-120, height-120);
+  
+  ds.render();
 }
 
 void fetchSerial() {
