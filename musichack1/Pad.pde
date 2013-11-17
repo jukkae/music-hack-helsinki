@@ -11,7 +11,7 @@ class Pad implements Instrument
   
   Pad(Summer output){
     out = output;
-    pwm1 = new Oscil(440.0f, 0.8, Waves.PULSE);
+    pwm1 = new Oscil(440.0f, 0.8, Waves.PHASOR);
     
     }
   
