@@ -15,6 +15,7 @@ Summer              lineMixer, mixer;
 BassLine            bassline;
 
 TagReader           tagReader;
+ProximityReader     proximityReader;
 StringList          activeTags;
 int                 elapsedFrames;
 
