@@ -42,8 +42,8 @@ public static class GeoKoneGlobals {
   public static final int SCENE_VERSION = 3;
 
   // Canvas dimensions
-  public static final int DEF_CANVAS_WIDTH = 1280;
-  public static final int DEF_CANVAS_HEIGHT = 720;
+  public static final int DEF_CANVAS_WIDTH = 1680;
+  public static final int DEF_CANVAS_HEIGHT = 1000;
 
   // Viewport dimensions
   public static final int DEF_VIEWPORT_WIDTH = 1680;

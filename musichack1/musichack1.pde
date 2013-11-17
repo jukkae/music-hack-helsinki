@@ -344,7 +344,7 @@ void draw()
   cameraY = mouseY;
   cameraZ = 666 + (distance*4);
   
-  println("distance = " + distance + " cameraZ = " + cameraZ);
+  //println("distance = " + distance + " cameraZ = " + cameraZ);
 
   camera(cameraX, cameraY, cameraZ, // eyeX, eyeY, eyeZ
   width/2.0, height/2.0, 0.0, // centerX, centerY, centerZ

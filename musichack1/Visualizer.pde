@@ -101,7 +101,7 @@ class Visualizer {
     float stepX = screenWidth / bufSize;
     float stepY = screenHeight / bufSize;
     float offsetX = 0;
-    float offsetY = 550;
+    float offsetY = screenHeight - 300;
     float x1, y1;
     float x2, y2;
     float mul = 96;

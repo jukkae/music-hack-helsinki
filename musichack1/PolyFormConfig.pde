@@ -71,7 +71,7 @@ public class PolyFormConfig
 
     angleOffset = 60.0f;
 
-    lineWeight = 1.0f;
+    lineWeight = 1.5f;
     strokeJoin = GeoKoneGlobals.STROKE_JOIN_MITER;
     strokeCap = GeoKoneGlobals.STROKE_CAP_SQUARE;
     strokeRatio = GeoKoneGlobals.GOLDEN_RATIO * 2;
