@@ -19,7 +19,7 @@ class Visualizer {
   ArrayList<PolyForm> polys;
   int [] polyColors;
   
-  int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_BLUE, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_YELLOW, GeoKoneColors.COLOR_WIPHALA_PURPLE };
+  int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_BLUE, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_RED, GeoKoneColors.COLOR_WIPHALA_PURPLE };
 
   void init(musichack1 parent, AudioOutput _out, int w, int h) {
     polys = new ArrayList();
