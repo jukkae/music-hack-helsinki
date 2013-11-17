@@ -1,12 +1,12 @@
 import processing.serial.*;
 
-class PromixityReader {
+class ProximityReader {
   Serial serialPort;
   final int SERIAL_BAUD_RATE = 9600;
-  int lastValue;
+  String lastValue;
 
   void init(musichack1 parent, String deviceStr) {
-    lastValue = 0;
+    lastValue = "";
     
     try {
       serialPort = new Serial(parent, deviceStr, SERIAL_BAUD_RATE);
@@ -17,15 +17,22 @@ class PromixityReader {
   }
   
   void pollValue() {
-    int val;
-    
-    if (serialPort.available() > 0) {
-      val = serialPort.read();
+    String val = "";
+    char c = 'a';
+    while (c != '\r') {
+      if (serialPort.available() > 0)
+      {
+        c = char(serialPort.read());
+        val += c;
+        
+      }
+    }
+    synchronized (lastValue) {
       lastValue = val;
     }
   }
   
-  int getLastValue() {
+  String getLastValue() {
     return lastValue;
   }
 }
