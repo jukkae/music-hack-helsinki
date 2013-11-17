@@ -19,15 +19,18 @@ class Visualizer {
   ArrayList<PolyForm> polys;
   int [] polyColors;
   int [] originalRadius;
+  int numPolys;
   
   int kickCounter;
   
-  int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_BLUE, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_RED, GeoKoneColors.COLOR_WIPHALA_PURPLE };
+  int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_RED, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_YELLOW, GeoKoneColors.COLOR_WIPHALA_BLUE };
+
 
   void init(musichack1 parent, AudioOutput _out, int w, int h) {
     polys = new ArrayList();
-    polyColors = new int[3];
-    originalRadius = new int[3];
+    numPolys = 3;
+    polyColors = new int[numPolys];
+    originalRadius = new int[numPolys];
     kickCounter = 0;
     
     out = _out;
@@ -74,6 +77,7 @@ class Visualizer {
     poly.setChildNumPointsRatio(3);
     poly.setChildRadiusRatio(0.355);
     poly.setRecursionDepth(1);
+    poly.setLineWeight(1.5);
     polyColors[2] = 2;
     
     polys.add(poly);
@@ -126,7 +130,7 @@ class Visualizer {
     PolyForm poly;
     int idx;
     color c;
-    for (int i=0; i<3; i++) {
+    for (int i=0; i<numPolys; i++) {
       idx = polyColors[i];
       idx += 1;
       if (idx >= rainbowPattern.length) {
@@ -141,7 +145,7 @@ class Visualizer {
   }
   
   void triggerKick() {
-    kickCounter = 16;
+    kickCounter = 12;
   }
   
   void setModAmt(float _modAmt) {
@@ -160,7 +164,7 @@ class Visualizer {
     PolyForm poly;
     //float radius = (8 * beat+16) + ((float)PApplet.sin(elapsedFrames / 512.0)) * 32.0;
     //float childRatio = (0.025 * beat+1) + ((float)PApplet.cos(elapsedFrames / 256.0) * (float)PApplet.sin(elapsedFrames/128.0)) * 0.618 * (modAmt / 100.0);
-    float angle = ((float)PApplet.cos(elapsedFrames / 256.0)) * 256.0 + modAmt;
+    float angle = ((float)PApplet.cos(elapsedFrames / 256.0)) * 256.0 + beat*32.0;
     float radius; 
         
     //poly.setAngleOffset(angle);

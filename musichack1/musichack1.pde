@@ -169,7 +169,7 @@ void mouseMoved()
   
   
   vis.setModAmt(modAmt);
-  //vis.setModFreq(modFreq);
+  vis.setModFreq(modFreq);
 }
 
 // Convert from note index (0-7) to Hz. Scale is currently A minor.
