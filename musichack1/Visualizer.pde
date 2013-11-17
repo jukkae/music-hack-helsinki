@@ -17,11 +17,13 @@ class Visualizer {
   float modAmt;
   float modFreq;
   ArrayList<PolyForm> polys;
+  int [] polyColors;
   
-  int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_BLUE, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_YELLOW };
+  int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_BLUE, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_YELLOW, GeoKoneColors.COLOR_WIPHALA_PURPLE };
 
   void init(musichack1 parent, AudioOutput _out, int w, int h) {
     polys = new ArrayList();
+    polyColors = new int[3];
     
     out = _out;
     screenWidth = w;
@@ -36,6 +38,7 @@ class Visualizer {
     poly.setChildRadiusRatio(0.5);
     poly.setChildNumPointsRatio(1);
     poly.setRadius(96);
+    polyColors[0] = 0;
     
     polys.add(poly);
     
@@ -48,6 +51,8 @@ class Visualizer {
     poly.setRadius(46);
     poly.setChildRadiusRatio(0.95);
     poly.setAngleOffset(-2119);
+    polyColors[1] = 1;
+
     
     polys.add(poly);
 
@@ -59,12 +64,12 @@ class Visualizer {
     poly.setChildNumPointsRatio(3);
     poly.setChildRadiusRatio(0.355);
     poly.setRecursionDepth(1);
+    polyColors[2] = 2;
     
     polys.add(poly);
     
     pointsDir = 1;
     beatCounter = 0;
-
 
     modAmt = 0.0f;
     modFreq = 0.0f;
@@ -98,10 +103,31 @@ class Visualizer {
   
   // Set poly colors like this:
   // Have a rainbow pattern we want to cycle through all the polys
-  // 
+  // We want to cycle the colors in our polys like this
+  
+  // on every call of this
+  // we cycle the color of each poly to the next in the rainbowColors array
+  // If we hit the limit
+  // we set it back to 0
+  
+  // need to store the current color from the array
   
   void cyclePolyColors() {
+    PolyForm poly;
+    int idx;
+    color c;
+    for (int i=0; i<3; i++) {
+      idx = polyColors[i];
+      idx += 1;
+      if (idx >= rainbowPattern.length) {
+        idx = 0;
+      }
       
+      polyColors[i] = idx;
+      c = color(rainbowPattern[idx]);
+      poly = polys.get(i);
+      poly.setLineColor(c);
+    }
   }
   
   void setModAmt(float _modAmt) {
