@@ -269,7 +269,10 @@ void draw()
     }
     else hihat.noteOff();
     
-    if(sixteenth%4==0)kick.noteOn(0.1);
+    if(sixteenth%4==0) { 
+      kick.noteOn(0.1);
+      vis.triggerKick();
+    }
     else kick.noteOff();
     
     //beats

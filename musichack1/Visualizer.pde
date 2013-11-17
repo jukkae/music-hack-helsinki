@@ -18,12 +18,17 @@ class Visualizer {
   float modFreq;
   ArrayList<PolyForm> polys;
   int [] polyColors;
+  int [] originalRadius;
+  
+  int kickCounter;
   
   int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_BLUE, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_RED, GeoKoneColors.COLOR_WIPHALA_PURPLE };
 
   void init(musichack1 parent, AudioOutput _out, int w, int h) {
     polys = new ArrayList();
     polyColors = new int[3];
+    originalRadius = new int[3];
+    kickCounter = 0;
     
     out = _out;
     screenWidth = w;
@@ -38,6 +43,7 @@ class Visualizer {
     poly.setChildRadiusRatio(0.5);
     poly.setChildNumPointsRatio(1);
     poly.setRadius(96);
+    originalRadius[0] = 96;
     polyColors[0] = 0;
     
     polys.add(poly);
@@ -49,6 +55,8 @@ class Visualizer {
     poly.setChildNumPointsRatio(1);
     poly.setRecursionDepth(1);
     poly.setRadius(46);
+    originalRadius[1] = 46;
+
     poly.setChildRadiusRatio(0.95);
     poly.setAngleOffset(-2119);
     polyColors[1] = 1;
@@ -58,8 +66,10 @@ class Visualizer {
 
     poly = new PolyForm(parent);
     poly.init(null);
-    poly.setNumPoints(64);
+    poly.setNumPoints(32);
     poly.setRadius(168);
+    originalRadius[2] = 168;
+
     poly.setAngleOffset(145);
     poly.setChildNumPointsRatio(3);
     poly.setChildRadiusRatio(0.355);
@@ -130,6 +140,10 @@ class Visualizer {
     }
   }
   
+  void triggerKick() {
+    kickCounter = 16;
+  }
+  
   void setModAmt(float _modAmt) {
     modAmt = _modAmt;
   }
@@ -146,8 +160,8 @@ class Visualizer {
     PolyForm poly;
     //float radius = (8 * beat+16) + ((float)PApplet.sin(elapsedFrames / 512.0)) * 32.0;
     //float childRatio = (0.025 * beat+1) + ((float)PApplet.cos(elapsedFrames / 256.0) * (float)PApplet.sin(elapsedFrames/128.0)) * 0.618 * (modAmt / 100.0);
-    float angle = ((float)PApplet.cos(elapsedFrames / 256.0)) * 512.0;
-    //float radius = 32.0 + (screenWidth / modAmt)/4.0;
+    float angle = ((float)PApplet.cos(elapsedFrames / 256.0)) * 256.0 + modAmt;
+    float radius; 
         
     //poly.setAngleOffset(angle);
     //poly.setRadius(radius);
@@ -159,13 +173,20 @@ class Visualizer {
       if (i%1 == 0) {
         angle = -angle;
       }
+      radius = originalRadius[i] + kickCounter;
+      
       poly.setAngleOffset(angle);
+      poly.setRadius(radius);
       poly.doDraw();
     }    
   }
 
   void doDraw(int beat, int _elapsedFrames) {
     elapsedFrames = _elapsedFrames;
+    kickCounter = kickCounter - 1;
+    if (kickCounter < 0) {
+      kickCounter = 0;
+    }
 
     /*
     if (beat != lastBeat) {
