@@ -46,6 +46,7 @@ int numberOfSteps; // length of the sequence in quarter notes
 int[] basslineNotes; // notes for bassline
 boolean[] basslineGates; // booleans for whether or not note is played on bass
 boolean[] hihatPattern; // booleans for hihat pattern
+color backgroundColor;
 
 //PenroseLSystem ds;
 
