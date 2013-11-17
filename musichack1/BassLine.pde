@@ -60,7 +60,7 @@ class BassLine implements Instrument
   }
   
   float getFreq(){
-    return wave1.frequency();
+    return wave1.frequency;
   }
   
   void noteOn(float f){

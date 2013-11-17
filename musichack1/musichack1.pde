@@ -14,6 +14,7 @@ LowPassSP           lpf;
 Summer              lineMixer, mixer;
 BassLine            bassline;
 Hihat               hihat;
+Pad                 pad;
 
 TagReader           tagReader;
 ProximityReader     proximityReader;
@@ -71,6 +72,8 @@ void setup()
   
   //hihat
   hihat = new Hihat( mixer );
+  
+  pad = new Pad( mixer );
 
   
   
