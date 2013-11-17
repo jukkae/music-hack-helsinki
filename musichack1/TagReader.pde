@@ -10,6 +10,8 @@ class TagReader {
   final int TAG_LEN = 5;
 
   StringList activeTags;
+  
+  boolean valuesChanged = true;
 
   void init(musichack1 parent, String deviceStr) {
     activeTags = new StringList();
@@ -76,10 +78,17 @@ class TagReader {
     }
 
     println(activeTags);
+    valuesChanged = true;
   }
   
   StringList getActiveTags() {
     return activeTags;
+  }
+  
+  boolean hasChanged() {
+    boolean b = valuesChanged;
+    valuesChanged = false;
+    return b;
   }
 
   // So we want this to return an array structured like this:
