@@ -15,9 +15,6 @@ class Pad implements Instrument
   Oscil lfo1, lfo2, lfo3;
   Multiplier gate;
   
-
-  
-  
   Pad( Summer output ){
     out = output;
     pwm1 = new Oscil(220.0f, 0.04, Waves.SQUARE);

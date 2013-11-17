@@ -24,9 +24,11 @@ class Visualizer {
   int kickCounter;
   
   PenroseLSystem ds;
+  boolean dsResetted;
+  
+  float a1, a2, a3;
   
   int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_RED, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_YELLOW, GeoKoneColors.COLOR_WIPHALA_BLUE };
-
 
   void init(musichack1 parent, AudioOutput _out, int w, int h) {
     polys = new ArrayList();
@@ -34,6 +36,10 @@ class Visualizer {
     polyColors = new int[numPolys];
     originalRadius = new int[numPolys];
     kickCounter = 0;
+    
+    a1 = 0;
+    a2 = 0;
+    a3 = 0;
     
     out = _out;
     screenWidth = w;
@@ -93,6 +99,7 @@ class Visualizer {
       //Penrose
   ds = new PenroseLSystem();
   ds.simulate(4);
+  dsResetted = false;
   }
 
   void drawWaveforms() {
@@ -150,6 +157,21 @@ class Visualizer {
     }
   }
   
+  void setChord(float note1, float note2, float note3) {
+    PolyForm poly;
+
+    a1 = note1;
+    a2 = note2;
+    a3 = note3;
+    float b = 0;
+    
+    for (int i=0; i<numPolys; i++) {
+      poly = polys.get(i);
+      //b = poly.getChildRadiusRatio() - note1;
+      //poly.setChildRadiusRatio(b);
+    }
+  }
+  
   void triggerKick() {
     kickCounter = 12;
   }
@@ -199,9 +221,17 @@ class Visualizer {
     }
 
     if (beat != lastBeat) {
-      beatCounter += 1;
-      if (beatCounter >= 8) {
+      if (dsResetted == true) {
         ds.simulate(4);
+        dsResetted = false;
+      }
+      
+      beatCounter += 1;
+      if (beatCounter >= 16) {
+        //ds.simulate(4);
+        
+        ds.reset();
+        dsResetted = true;
 
         numPolyPoints += pointsDir;
         if (numPolyPoints >= 12 || numPolyPoints <= 3) {

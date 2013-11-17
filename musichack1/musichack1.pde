@@ -24,6 +24,9 @@ int                 elapsedFrames;
 float               cameraX;
 float               cameraY;
 float               cameraZ;
+float               note1;
+float               note2;
+float               note3;
 
 Visualizer          vis;
 
@@ -120,10 +123,13 @@ void setup()
   // Visualizer
   vis = new Visualizer();
   vis.init(this, out, GeoKoneGlobals.DEF_CANVAS_WIDTH, GeoKoneGlobals.DEF_CANVAS_HEIGHT);
-  
+
   cameraX = 0;
   cameraY = 0;
   cameraZ = 400;
+  note1 = 0;
+  note2 = 0;
+  note3 = 0;
 }
 
 //fills the bassline notes with random values
@@ -301,17 +307,33 @@ void draw()
         //trigger pad chord changes only when we have bass!
         //Am
         if (random(1)<0.3) {
-          pad.setChord(2*convertNoteToFreq(0), 2*convertNoteToFreq(2), 2*convertNoteToFreq(4));
+          note1 = 2*convertNoteToFreq(0);
+          note2 = 2*convertNoteToFreq(2);
+          note3 = 2*convertNoteToFreq(4);
+          pad.setChord(note1, note2, note3);
+          vis.setChord(note1, note2, note3);
+
           println("Am");
         }
         //Dm
         if (random(1)<0.1) {
-          pad.setChord(2*convertNoteToFreq(3), 2*convertNoteToFreq(5), 2*convertNoteToFreq(7));
+          note1 = 2*convertNoteToFreq(3);
+          note2 = 2*convertNoteToFreq(5);
+          note3 = 2*convertNoteToFreq(7);
+
+          pad.setChord(note1, note2, note3);
+          vis.setChord(note1, note2, note3);
+
           println("Dm");
         }
         //Em
         if (random(1)<0.01) {
-          pad.setChord(2*convertNoteToFreq(1), 2*convertNoteToFreq(4), 2*convertNoteToFreq(6));
+          note1 = 2*convertNoteToFreq(1);
+          note2 = 2*convertNoteToFreq(4);
+          note3 = 2*convertNoteToFreq(6);
+          pad.setChord(note1, note2, note3);
+          vis.setChord(note1, note2, note3);
+
           println("Em");
         }
       }
@@ -323,11 +345,11 @@ void draw()
     }
   }
   sixteenth = (sixteenth+1) % (4*numberOfSteps);
-  
-  cameraX = (float)(PApplet.cos(elapsedFrames/1024.0) * (float)(PApplet.sin(elapsedFrames/512.0))) * width;
-  cameraY = (float)(PApplet.sin(elapsedFrames/768.0) * (float)(PApplet.cos(elapsedFrames/1024.0))) * height;
-  cameraZ = 400;
-  
+
+  cameraX = mouseX;
+  cameraY = mouseY;
+  cameraZ = 666;
+
   camera(cameraX, cameraY, cameraZ, // eyeX, eyeY, eyeZ
   width/2.0, height/2.0, 0.0, // centerX, centerY, centerZ
   0.0, 1.0, 0.0); // upX, upY, upZ
@@ -349,7 +371,6 @@ void draw()
   text(beat, width-400, height-120);
   text(clock, width-300, height-120);
   text(frameRate, width-120, height-120);
-
 }
 
 void fetchSerial() {
