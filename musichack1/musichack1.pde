@@ -240,7 +240,7 @@ void setPolyColor() {
   }
   if (activeTags.hasValue(yellowTagId)) {
     g = 255;
-    r = 255; 
+    //r = 255; 
   }
   if (activeTags.hasValue(redTagId)) {
     r = 255;
