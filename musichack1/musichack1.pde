@@ -20,6 +20,7 @@ TagReader           tagReader;
 ProximityReader     proximityReader;
 StringList          activeTags;
 int                 elapsedFrames;
+color               backgroundColor;
 
 float               cameraX;
 float               cameraY;
@@ -45,8 +46,11 @@ int[] basslineNotes; // notes for bassline
 boolean[] basslineGates; // booleans for whether or not note is played on bass
 boolean[] hihatPattern; // booleans for hihat pattern
 
+//PenroseLSystem ds;
+
 void setup()
 {
+  backgroundColor = color(0,0,0);
   // GENERAL PROCESSING VARIABLES
   size(GeoKoneGlobals.DEF_CANVAS_WIDTH, GeoKoneGlobals.DEF_CANVAS_HEIGHT, P3D);
   frameRate(60);
@@ -79,9 +83,7 @@ void setup()
   pad = new Pad( mixer );
 
 
-
   mixer.patch( out );
-
 
   // SEQUENCER VARIABLES
   numberOfSteps = 16;
@@ -99,7 +101,6 @@ void setup()
 
   makeBassline();
 
-
   //for testing
   hihatPattern = new boolean[numberOfSteps*4];
   for (int i = 0; i < (4*numberOfSteps); i++) {
@@ -108,13 +109,12 @@ void setup()
   }
 
   // Initialize the tagReader
-
   tagReader = new TagReader();
   tagReader.init(this, "/dev/tty.usbserial-AH013H15");
 
   proximityReader = new ProximityReader();
-  proximityReader.init(this, "/dev/tty.usbmodemfa141");
-
+  proximityReader.init(this, "/dev/tty.usbmodem1411");
+  
   thread("fetchSerial");
 
   // Visualizer
@@ -124,6 +124,10 @@ void setup()
   cameraX = 0;
   cameraY = 0;
   cameraZ = 400;
+  //Penrose 
+  //ds = new PenroseLSystem();
+  //ds.simulate(4);
+  
 }
 
 //fills the bassline notes with random values
@@ -239,6 +243,7 @@ void setPolyColor() {
   }
   if (activeTags.hasValue(yellowTagId)) {
     g = 255;
+    r = 255;
   }
   if (activeTags.hasValue(redTagId)) {
     r = 255;
@@ -251,23 +256,24 @@ void setPolyColor() {
    */
   polyColor = color(r, g, b);
   //}
-
-  vis.setPolyColor(polyColor);
+  println("color = ", r, g, b);
+  backgroundColor = color(r, g, b);
 }
 
 void draw()
 {
-
-  background(0);
+  
+  background(backgroundColor);
   stroke(255);
-
-
-
-
+  
   // Poll the tags, only every 16 frames so that the reader doesn't get stuck
   if ((elapsedFrames % 16) == 0) {
     tagReader.pollTags();
     activeTags = tagReader.getActiveTags();
+    if (tagReader.hasChanged()) {
+      println("Set polycolor");
+      setPolyColor();
+    }
   }
 
 
@@ -320,6 +326,7 @@ void draw()
 
     if ( sixteenth % (numberOfSteps*4)==(numberOfSteps*4-1) ) {
       makeNewHihats();
+      //ds.simulate(4);
     }
   }
   sixteenth = (sixteenth+1) % (4*numberOfSteps);
