@@ -36,8 +36,6 @@ boolean beatTriggered; // trigger each beat once
 int[] basslineNotes; // notes for bassline
 boolean[] basslineGates; // booleans for whether or not note is played on bass
 
-
-
 void setup()
 {
   // GENERAL PROCESSING VARIABLES
@@ -128,8 +126,10 @@ void mouseMoved()
   bassline.fm.setAmplitude(modAmt);
   bassline.fm.setFrequency(modFreq);
   bassline.fm.offset.setLastValue(freq1);
+  
+  vis.setModAmt(modAmt);
+  //vis.setModFreq(modFreq);
 }
-
 
 // Convert from note index (0-7) to Hz. Scale is currently A minor.
 float convertNoteToFreq(int note){
@@ -174,6 +174,37 @@ float getNoteFreq(int distance){
   return f0*pow(a, distance);
 }
 
+void setPolyColor() {
+  color polyColor;
+  int [] randomColors = { GeoKoneColors.COLOR_WIPHALA_BLUE, GeoKoneColors.COLOR_WIPHALA_RED, GeoKoneColors.COLOR_WIPHALA_YELLOW };
+  int r, g, b;
+ 
+  r = 0;
+  g = 0;
+  b = 0;
+  
+  // Do some simple color combining
+  if (activeTags.hasValue(blueTagId)) {
+    b = 255;
+  }
+  if (activeTags.hasValue(yellowTagId)) {
+    g = 255;
+  }
+  if (activeTags.hasValue(redTagId)) {
+    r = 255;
+  }
+  
+  /*
+  if (r == 0 && g == 0 && b == 0) {
+    polyColor = color(randomColors[int(random(3))]);
+  } else {
+  */
+    polyColor = color(r, g, b);
+  //}
+  
+  vis.setPolyColor(polyColor);
+}
+
 void draw()
 {
   background(0);
@@ -185,6 +216,7 @@ void draw()
     activeTags = tagReader.getActiveTags();
   }
   
+    
   // MOVE SEQUENCER
     if ( millis() - clock >= quarterNoteLength )
   {
@@ -207,6 +239,7 @@ void draw()
     
   }
 
+  setPolyColor();
   vis.doDraw(beat, elapsedFrames);
   
   elapsedFrames += 1;
