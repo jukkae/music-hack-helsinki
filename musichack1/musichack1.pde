@@ -263,7 +263,6 @@ void draw()
   background(backgroundColor);
   stroke(255);
   
-  
   // Poll the tags, only every 16 frames so that the reader doesn't get stuck
   if ((elapsedFrames % 16) == 0) {
     tagReader.pollTags();
@@ -337,9 +336,15 @@ void draw()
   }
   sixteenth = (sixteenth+1) % (4*numberOfSteps);
 
+  String lastDistance = proximityReader.getLastValue();
+  //text(lastDistance, width-200, height-400);
+  float distance = float(lastDistance);
+
   cameraX = mouseX;
   cameraY = mouseY;
-  cameraZ = 666;
+  cameraZ = 666 + (distance*4);
+  
+  println("distance = " + distance + " cameraZ = " + cameraZ);
 
   camera(cameraX, cameraY, cameraZ, // eyeX, eyeY, eyeZ
   width/2.0, height/2.0, 0.0, // centerX, centerY, centerZ
@@ -347,10 +352,7 @@ void draw()
 
   vis.doDraw(beat, elapsedFrames);
 
-  String lastDistance = proximityReader.getLastValue();
-  text(lastDistance, width-200, height-400);
-  
-  float distance = float(lastDistance);
+
   
   float freq2 = distance * 2;
   bassline.fm.setFrequency(freq2);
