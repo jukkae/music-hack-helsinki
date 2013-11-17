@@ -1,5 +1,6 @@
 class Visualizer {
   AudioOutput out;
+  
   // Polyform stuff
   PolyFormConfig polyConfig;
   PolyForm poly;
@@ -10,6 +11,8 @@ class Visualizer {
   int lastBeat;
   int pointsDir;
   int beatCounter;
+  float modAmt;
+  float modFreq;
 
   void init(musichack1 parent, AudioOutput _out, int w, int h) {
     out = _out;
@@ -23,9 +26,11 @@ class Visualizer {
     poly.setChildNumPointsRatio(1);
     poly.setRecursionDepth(2);
     poly.setOpacity(128);
-
     pointsDir = 1;
     beatCounter = 0;
+    
+    modAmt = 0.0f;
+    modFreq = 0.0f;
   }
 
   void drawWaveforms() {
@@ -53,14 +58,30 @@ class Visualizer {
       line (x1, y1, x2, y2);
     }
   }
-
+  
+  void setModAmt(float _modAmt) {
+    modAmt = _modAmt;
+  }
+  
+  void setModFreq(float _modFreq) {
+    modFreq = _modFreq;
+  }
+  
+  void setPolyColor(color c) {
+    poly.setLineColor(c);
+  }
+  
   void drawPoly(int beat) {
     //float radius = (8 * beat+16) + ((float)PApplet.sin(elapsedFrames / 512.0)) * 32.0;
-    float childRatio = (0.025 * beat+1) + ((float)PApplet.cos(elapsedFrames / 256.0) * (float)PApplet.sin(elapsedFrames/128.0)) * 0.618;
+    float childRatio = (0.025 * beat+1) + ((float)PApplet.cos(elapsedFrames / 256.0) * (float)PApplet.sin(elapsedFrames/128.0)) * 0.618 * (modAmt / 100.0);
     float angle = ((float)PApplet.cos(elapsedFrames / 256.0)) * 128.0;
+    float radius = 32.0 + (screenWidth / modAmt)/4.0;
+        
     poly.setAngleOffset(angle);
     //poly.setRadius(radius);
     poly.setChildRadiusRatio(childRatio);
+    //poly.setChildNumPointsRatio(childNumPointsRatio);
+    
     poly.doDraw();
   }
 
