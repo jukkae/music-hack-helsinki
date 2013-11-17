@@ -112,7 +112,7 @@ void setup()
   tagReader.init(this, "/dev/tty.usbserial-AH013H15");
   
   proximityReader = new ProximityReader();
-  proximityReader.init(this, "/dev/tty.usbmodem1411");
+  proximityReader.init(this, "/dev/tty.usbmodemfa141");
   
   thread("fetchSerial");
   
@@ -269,13 +269,12 @@ void draw()
     tagReader.pollTags();
     activeTags = tagReader.getActiveTags();
     if (tagReader.hasChanged()) {
-      println("Set polycolor");
       setPolyColor();
     }
   }
 
   // MOVE SEQUENCER
-    if ( millis() - clock >= (quarterNoteLength/4) )
+  if ( millis() - clock >= (quarterNoteLength/4) )
   {
     clock = millis();
     
@@ -297,47 +296,39 @@ void draw()
         beat = (beat+1) % numberOfSteps;
         beatTriggered = false;
     
-      if(basslineGates[beat]){
-        bassline.setFreq(convertNoteToFreq(basslineNotes[beat]));
-        bassline.noteOn(1.0f);
-        
-        //trigger pad chord changes only when we have bass!
-        //Am
-	/*
-        if (random(1)<0.3) {
-          note1 = 2*convertNoteToFreq(0);
-          note2 = 2*convertNoteToFreq(2);
-          note3 = 2*convertNoteToFreq(4);
-          pad.setChord(note1, note2, note3);
-          vis.setChord(note1, note2, note3);
+      if(basslineGates[beat]) {
+	      bassline.setFreq(convertNoteToFreq(basslineNotes[beat]));
+	      bassline.noteOn(1.0f);
 
-        if(random(1)<0.3){
-          pad.setChord(2*convertNoteToFreq(0), 2*convertNoteToFreq(2), 2*convertNoteToFreq(4));
-          println("Am");
-        }
-        //Dm
-        if (random(1)<0.1) {
-          note1 = 2*convertNoteToFreq(3);
-          note2 = 2*convertNoteToFreq(5);
-          note3 = 2*convertNoteToFreq(7);
+	      //trigger pad chord changes only when we have bass!
+	      //Am
+	      if (random(1)<0.3) {
+		      note1 = 2*convertNoteToFreq(0);
+		      note2 = 2*convertNoteToFreq(2);
+		      note3 = 2*convertNoteToFreq(4);
+		      pad.setChord(note1, note2, note3);
+	      }
+	      if(random(1)<0.3){
+		      pad.setChord(2*convertNoteToFreq(0), 2*convertNoteToFreq(2), 2*convertNoteToFreq(4));
+	      }
+	      //Dm
+	      if (random(1)<0.1) {
+		      note1 = 2*convertNoteToFreq(3);
+		      note2 = 2*convertNoteToFreq(5);
+		      note3 = 2*convertNoteToFreq(7);
 
-          pad.setChord(note1, note2, note3);
-          vis.setChord(note1, note2, note3);
-
-          println("Dm");
-        }
-        //Em
-        if (random(1)<0.01) {
-          note1 = 2*convertNoteToFreq(1);
-          note2 = 2*convertNoteToFreq(4);
-          note3 = 2*convertNoteToFreq(6);
-          pad.setChord(note1, note2, note3);
-          vis.setChord(note1, note2, note3);
-
-          println("Em");
-        }*/
-      }
-      else bassline.noteOff();
+		      pad.setChord(note1, note2, note3);
+	      }
+	      //Em
+	      if (random(1)<0.01) {
+		      note1 = 2*convertNoteToFreq(1);
+		      note2 = 2*convertNoteToFreq(4);
+		      note3 = 2*convertNoteToFreq(6);
+		      pad.setChord(note1, note2, note3);
+	      }
+      } else {
+	      bassline.noteOff();
+      }        
     }
 
     if ( sixteenth % (numberOfSteps*4)==(numberOfSteps*4-1) ) {
@@ -373,15 +364,14 @@ void draw()
   //println("last distance = ", int(lastDistance), " note = ", note);
   
   //println(freq2);
-  text(freq2, width-200, height-400);
-  
+  //text(freq2, width-200, height-400);
   
   elapsedFrames += 1;
   
   // texts for testing
-  text(beat, width-400, height-120);
-  text(clock, width-300, height-120);
-  text(frameRate, width-120, height-120);
+  //text(beat, width-400, height-120);
+  //text(clock, width-300, height-120);
+  //text(frameRate, width-120, height-120);
 }
 
 void fetchSerial() {
