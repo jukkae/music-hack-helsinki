@@ -20,7 +20,7 @@ class Hihat implements Instrument
     out = output;
     noise = new Noise(0.05);
     gate = new Multiplier(0);
-    adsr = new ADSR(1.0f, 0.01f, 0.05f);
+    adsr = new ADSR(0.2f, 0.01f, 0.05f);
     
     noise.patch(gate);
     gate.patch(adsr);

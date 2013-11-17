@@ -23,7 +23,7 @@ class ProximityReader {
       if (serialPort.available() > 0)
       {
         c = char(serialPort.read());
-        val += c;
+        if (c != '\n' && c != '\r') val += c;
         
       }
     }

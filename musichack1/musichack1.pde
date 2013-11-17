@@ -10,7 +10,6 @@ import ddf.minim.effects.*;
 Minim               minim;
 AudioOutput         out;
 KickInstrument      kick;
-LowPassSP           lpf;
 Summer              lineMixer, mixer;
 BassLine            bassline;
 Hihat               hihat;
@@ -70,9 +69,6 @@ void setup()
   
   // create a mixer for everything
   mixer = new Summer();
-  
-  // create a new LPF
-  lpf = new LowPassSP(100, 44100);
   
   // create a kick drum
   kick = new KickInstrument( mixer );
@@ -167,7 +163,7 @@ void makeNewHihats(){
 
 void mouseMoved()
 {
-  float cutoff = map(mouseX, 0, width, 20, 1000);
+  /*float cutoff = map(mouseX, 0, width, 20, 1000);
   int note = (int) map(mouseY, 0, height, 0, 7);
   float freq1 = convertNoteToFreq(note);
 
@@ -182,6 +178,7 @@ void mouseMoved()
   
   vis.setModAmt(modAmt);
   vis.setModFreq(modFreq);
+  */
 }
 
 // Convert from note index (0-7) to Hz. Scale is currently A minor.
@@ -276,7 +273,6 @@ void draw()
     }
   }
 
-
   // MOVE SEQUENCER
     if ( millis() - clock >= (quarterNoteLength/4) )
   {
@@ -306,6 +302,7 @@ void draw()
         
         //trigger pad chord changes only when we have bass!
         //Am
+	/*
         if (random(1)<0.3) {
           note1 = 2*convertNoteToFreq(0);
           note2 = 2*convertNoteToFreq(2);
@@ -313,6 +310,8 @@ void draw()
           pad.setChord(note1, note2, note3);
           vis.setChord(note1, note2, note3);
 
+        if(random(1)<0.3){
+          pad.setChord(2*convertNoteToFreq(0), 2*convertNoteToFreq(2), 2*convertNoteToFreq(4));
           println("Am");
         }
         //Dm
@@ -335,7 +334,7 @@ void draw()
           vis.setChord(note1, note2, note3);
 
           println("Em");
-        }
+        }*/
       }
       else bassline.noteOff();
     }
@@ -358,12 +357,23 @@ void draw()
 
   String lastDistance = proximityReader.getLastValue();
   text(lastDistance, width-200, height-400);
-  /*
-  float freq2 = lastDistance * 64;
+  
+  float distance = float(lastDistance);
+  
+  float freq2 = distance * 2;
   bassline.fm.setFrequency(freq2);
-  println(freq2);
+  bassline.fm.setAmplitude(map(distance, 20, 100, 220, 1));
+  bassline.fm.offset.setLastValue(freq2);
+  
+  //lastDistance = lastDistance.replaceAll("\\\\r","");
+  //lastDistance = lastDistance.replaceAll("\\\\n","");
+  int note = (int(lastDistance)-20) > 50 ? 7 : int((int(lastDistance)-20)/6.25);
+  pad.setChord(convertNoteToFreq(note%7)*2, convertNoteToFreq((note+2)%7)*2, convertNoteToFreq((note+4)%7)*2);
+  //println("last distance = ", int(lastDistance), " note = ", note);
+  
+  //println(freq2);
   text(freq2, width-200, height-400);
-  */
+  
   
   elapsedFrames += 1;
   

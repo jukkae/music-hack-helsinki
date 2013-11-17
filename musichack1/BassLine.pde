@@ -32,7 +32,7 @@ class BassLine implements Instrument
     linemix = new Summer();
     submix = new Summer();    
     gate = new Multiplier(0);
-    adsr = new ADSR(0.5f, 0.01f, 0.25f);
+    adsr = new ADSR(0.3f, 0.01f, 0.25f);
     shaper = new WaveShaper(0.8f, 1.0f, Waves.SAW, true);
     lpf = new LowPassSP(100, 44100);
     delay = new Delay(0.374, -0.7, true, true);
