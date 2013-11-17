@@ -13,6 +13,7 @@ KickInstrument      kick;
 LowPassSP           lpf;
 Summer              lineMixer, mixer;
 BassLine            bassline;
+Hihat               hihat;
 
 TagReader           tagReader;
 StringList          activeTags;
@@ -29,12 +30,14 @@ final String        redTagId = "3C00CE2C49";
 // global sequencer variables
 int bpm;
 float quarterNoteLength; // Length of a quarter note in ms
-int tempo; // how long a sixteenth note is in ms
 int clock; // timer for moving from note to note
 int beat; // current beat
+int sixteenth; // current sixteenth
 boolean beatTriggered; // trigger each beat once
+int numberOfSteps; // length of the sequence in quarter notes
 int[] basslineNotes; // notes for bassline
 boolean[] basslineGates; // booleans for whether or not note is played on bass
+boolean[] hihatPattern; // booleans for hihat pattern
 
 
 
@@ -67,29 +70,37 @@ void setup()
   //bassline
   bassline = new BassLine( mixer );
   
+  //hihat
+  hihat = new Hihat( mixer );
+
+  
   
   mixer.patch( out );
   
   
-
-  
-  
   // SEQUENCER VARIABLES
+  numberOfSteps = 16;
   // initialize bpm at 120
   bpm = 120;
   //calculate length of a quarter note. 60000 ms in a minute.
   quarterNoteLength = 60000 / bpm;
-  // calculate length of a 16th note (REMOVE THIS)
-  tempo = (15 / bpm) / 1000;
   // get clock from millis()
   clock = millis();
   beat = 0;
+  sixteenth = 0;
   beatTriggered = false;
-  basslineNotes = new int[16]; //hardcoded length of 16 quarters
-  basslineGates = new boolean[16];
+  basslineNotes = new int[numberOfSteps];
+  basslineGates = new boolean[numberOfSteps];
   
   makeBassline();
   
+    
+  //for testing
+  hihatPattern = new boolean[numberOfSteps*4];
+  for(int i = 0; i < (4*numberOfSteps); i++){
+    //if(i%4!=0)hihatPattern[i] = true;
+    hihatPattern[i]=true;
+  }
   
   // Initialize the tagReader
   
@@ -103,18 +114,20 @@ void setup()
 
 //fills the bassline notes with random values
 void makeBassline(){
-  for (int i = 0; i < 16; i++){
+  for (int i = 0; i < numberOfSteps; i++){
     basslineNotes[i] = int(random(7));
     basslineGates[i] = false;
     if(random(1)<0.8)basslineGates[i] = true;
   }
   //notes MUST be switched off every now and then, otherwise there'll be feedback and general mayhem
   boolean test = false;
-  for (int i = 0; i < 16; i++){
+  for (int i = 0; i < numberOfSteps; i++){
     if(!basslineGates[i])test=true;
   }
   if(!test)makeBassline();
 }
+
+
 
 void mouseMoved()
 {
@@ -186,25 +199,32 @@ void draw()
   }
   
   // MOVE SEQUENCER
-    if ( millis() - clock >= quarterNoteLength )
+    if ( millis() - clock >= (quarterNoteLength/4) )
   {
     clock = millis();
-    beat = (beat+1) % 16;
-    beatTriggered = false;
     
-    if(beat%2==0){
-      kick.noteOn(0.1);
-    }
-    else{
-      kick.noteOff();
+    if(hihatPattern[sixteenth])hihat.noteOn(0.1);
+    else hihat.noteOff();
+    
+    if(sixteenth%4==0)kick.noteOn(0.1);
+    else kick.noteOff();
+    
+    //beats
+    if ( sixteenth%4 == 0 ){
+      
+        clock = millis();
+        beat = (beat+1) % numberOfSteps;
+        beatTriggered = false;
+    
+      if(basslineGates[beat]){
+        bassline.setFreq(convertNoteToFreq(basslineNotes[beat]));
+        bassline.noteOn(1.0f);
+      }
+      else bassline.noteOff();
     }
     
-    if(basslineGates[beat]){
-      bassline.setFreq(convertNoteToFreq(basslineNotes[beat]));
-      bassline.noteOn(1.0f);
-    }
-    else bassline.noteOff();
-    
+        sixteenth = (sixteenth+1) % (4*numberOfSteps);
+
   }
 
   vis.doDraw(beat, elapsedFrames);
