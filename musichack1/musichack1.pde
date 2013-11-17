@@ -347,7 +347,7 @@ void draw()
   text(clock, width-300, height-120);
   text(frameRate, width-120, height-120);
   
-  ds.render();
+ // ds.render();
 }
 
 void fetchSerial() {
