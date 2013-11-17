@@ -23,6 +23,8 @@ class Visualizer {
   
   int kickCounter;
   
+  PenroseLSystem ds;
+  
   int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_RED, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_YELLOW, GeoKoneColors.COLOR_WIPHALA_BLUE };
 
 
@@ -87,6 +89,10 @@ class Visualizer {
 
     modAmt = 0.0f;
     modFreq = 0.0f;
+    
+      //Penrose
+  ds = new PenroseLSystem();
+  ds.simulate(4);
   }
 
   void drawWaveforms() {
@@ -192,23 +198,24 @@ class Visualizer {
       kickCounter = 0;
     }
 
-    /*
     if (beat != lastBeat) {
       beatCounter += 1;
       if (beatCounter >= 8) {
+        ds.simulate(4);
+
         numPolyPoints += pointsDir;
         if (numPolyPoints >= 12 || numPolyPoints <= 3) {
           pointsDir = -pointsDir;
         }
-        poly.setNumPoints(numPolyPoints);
+        //poly.setNumPoints(numPolyPoints);
         beatCounter = 0;
       }
     } 
     lastBeat = beat;
-    */
 
     drawWaveforms();
     drawPoly(beat);
+    ds.render();
   }
 }
 
