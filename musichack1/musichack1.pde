@@ -100,8 +100,8 @@ void setup()
   //for testing
   hihatPattern = new boolean[numberOfSteps*4];
   for(int i = 0; i < (4*numberOfSteps); i++){
-    //if(i%4!=0)hihatPattern[i] = true;
-    hihatPattern[i]=true;
+    if((i+2)%4==0)hihatPattern[i]=true;
+    else hihatPattern[i]=false;
   }
   
   // Initialize the tagReader
@@ -132,6 +132,23 @@ void makeBassline(){
     if(!basslineGates[i])test=true;
   }
   if(!test)makeBassline();
+}
+
+//MARKOV CHAIN BITCHES
+void makeNewHihats(){
+  for(int i = 0; i < numberOfSteps*4; i++){
+    if(random(1)<0.05){
+      hihatPattern[i] = !hihatPattern[i];
+      if(i!=0){
+        if(!hihatPattern[i-1]){
+          if(random(1)<0.2)hihatPattern[i]=true;
+        }
+        else{
+          if(random(1)<0.01)hihatPattern[i]=false;
+        }
+      }
+    }
+  }
 }
 
 
@@ -262,6 +279,10 @@ void draw()
         bassline.noteOn(1.0f);
       }
       else bassline.noteOff();
+    }
+    
+    if ( sixteenth % (numberOfSteps*4)==(numberOfSteps*4-1) ){
+      makeNewHihats();      
     }
     
         sixteenth = (sixteenth+1) % (4*numberOfSteps);
