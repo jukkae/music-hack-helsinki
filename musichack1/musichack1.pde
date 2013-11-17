@@ -107,7 +107,7 @@ void setup()
   tagReader.init(this, "/dev/tty.usbserial-AH013H15");
   
   proximityReader = new ProximityReader();
-  proximityReader.init(this, "/dev/tty.usbmodem1411");
+  proximityReader.init(this, "/dev/tty.usbmodemfa141");
   
   thread("fetchSerial");
   
@@ -142,9 +142,11 @@ void mouseMoved()
   float modAmt = map( mouseY, 0, height, 220, 1 );
   float modFreq = map( mouseX, 0, width, 200, 1000 );
   
+  
   bassline.fm.setAmplitude(modAmt);
   bassline.fm.setFrequency(modFreq);
   bassline.fm.offset.setLastValue(freq1);
+  
   
   vis.setModAmt(modAmt);
   //vis.setModFreq(modFreq);
@@ -234,14 +236,17 @@ void draw()
     tagReader.pollTags();
     activeTags = tagReader.getActiveTags();
   }
-  
-    
+
+
   // MOVE SEQUENCER
     if ( millis() - clock >= (quarterNoteLength/4) )
   {
     clock = millis();
     
-    if(hihatPattern[sixteenth])hihat.noteOn(0.1);
+    if(hihatPattern[sixteenth]) {
+      hihat.noteOn(0.1);
+      vis.cyclePolyColors();
+    }
     else hihat.noteOff();
     
     if(sixteenth%4==0)kick.noteOn(0.1);
@@ -267,6 +272,15 @@ void draw()
 
   setPolyColor();
   vis.doDraw(beat, elapsedFrames);
+
+  String lastDistance = proximityReader.getLastValue();
+  text(lastDistance, width-200, height-400);
+  /*
+  float freq2 = lastDistance * 64;
+  bassline.fm.setFrequency(freq2);
+  println(freq2);
+  text(freq2, width-200, height-400);
+  */
   
   elapsedFrames += 1;
   
@@ -279,7 +293,7 @@ void draw()
 void fetchSerial() {
   while(true) {
     proximityReader.pollValue();
-    println(proximityReader.getLastValue());
+    //println("lastValue = " + proximityReader.getLastValue());
     try {
       Thread.sleep(50);
     } catch (InterruptedException e) {

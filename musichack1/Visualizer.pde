@@ -4,6 +4,9 @@ class Visualizer {
   // Polyform stuff
   PolyFormConfig polyConfig;
   PolyForm poly;
+  PolyForm poly1;
+  PolyForm poly2;
+ 
   int screenWidth;
   int screenHeight;
   int elapsedFrames;
@@ -13,22 +16,56 @@ class Visualizer {
   int beatCounter;
   float modAmt;
   float modFreq;
+  ArrayList<PolyForm> polys;
+  
+  int [] rainbowPattern = { GeoKoneColors.COLOR_WIPHALA_BLUE, GeoKoneColors.COLOR_WIPHALA_ORANGE, GeoKoneColors.COLOR_WIPHALA_YELLOW };
 
   void init(musichack1 parent, AudioOutput _out, int w, int h) {
+    polys = new ArrayList();
+    
     out = _out;
     screenWidth = w;
     screenHeight = h;
     numPolyPoints = 3;
 
+    // middle poly
     poly = new PolyForm(parent);
     poly.init(null);
-    poly.setNumPoints(numPolyPoints);
+    poly.setNumPoints(13);
+    poly.setRecursionDepth(1);
+    poly.setChildRadiusRatio(0.5);
     poly.setChildNumPointsRatio(1);
-    poly.setRecursionDepth(2);
-    poly.setOpacity(128);
+    poly.setRadius(96);
+    
+    polys.add(poly);
+    
+    // inner poly
+    poly = new PolyForm(parent);
+    poly.init(null);
+    poly.setNumPoints(11);
+    poly.setChildNumPointsRatio(1);
+    poly.setRecursionDepth(1);
+    poly.setRadius(46);
+    poly.setChildRadiusRatio(0.95);
+    poly.setAngleOffset(-2119);
+    
+    polys.add(poly);
+
+    poly = new PolyForm(parent);
+    poly.init(null);
+    poly.setNumPoints(64);
+    poly.setRadius(168);
+    poly.setAngleOffset(145);
+    poly.setChildNumPointsRatio(3);
+    poly.setChildRadiusRatio(0.355);
+    poly.setRecursionDepth(1);
+    
+    polys.add(poly);
+    
     pointsDir = 1;
     beatCounter = 0;
-    
+
+
     modAmt = 0.0f;
     modFreq = 0.0f;
   }
@@ -59,6 +96,14 @@ class Visualizer {
     }
   }
   
+  // Set poly colors like this:
+  // Have a rainbow pattern we want to cycle through all the polys
+  // 
+  
+  void cyclePolyColors() {
+      
+  }
+  
   void setModAmt(float _modAmt) {
     modAmt = _modAmt;
   }
@@ -68,26 +113,35 @@ class Visualizer {
   }
   
   void setPolyColor(color c) {
-    poly.setLineColor(c);
+    //poly.setLineColor(c);
   }
   
   void drawPoly(int beat) {
+    PolyForm poly;
     //float radius = (8 * beat+16) + ((float)PApplet.sin(elapsedFrames / 512.0)) * 32.0;
-    float childRatio = (0.025 * beat+1) + ((float)PApplet.cos(elapsedFrames / 256.0) * (float)PApplet.sin(elapsedFrames/128.0)) * 0.618 * (modAmt / 100.0);
-    float angle = ((float)PApplet.cos(elapsedFrames / 256.0)) * 128.0;
-    float radius = 32.0 + (screenWidth / modAmt)/4.0;
+    //float childRatio = (0.025 * beat+1) + ((float)PApplet.cos(elapsedFrames / 256.0) * (float)PApplet.sin(elapsedFrames/128.0)) * 0.618 * (modAmt / 100.0);
+    float angle = ((float)PApplet.cos(elapsedFrames / 256.0)) * 512.0;
+    //float radius = 32.0 + (screenWidth / modAmt)/4.0;
         
-    poly.setAngleOffset(angle);
+    //poly.setAngleOffset(angle);
     //poly.setRadius(radius);
-    poly.setChildRadiusRatio(childRatio);
+    //poly.setChildRadiusRatio(childRatio);
     //poly.setChildNumPointsRatio(childNumPointsRatio);
     
-    poly.doDraw();
+    for (int i=0; i<polys.size(); i++) {
+      poly = polys.get(i);
+      if (i%1 == 0) {
+        angle = -angle;
+      }
+      poly.setAngleOffset(angle);
+      poly.doDraw();
+    }    
   }
 
   void doDraw(int beat, int _elapsedFrames) {
     elapsedFrames = _elapsedFrames;
 
+    /*
     if (beat != lastBeat) {
       beatCounter += 1;
       if (beatCounter >= 8) {
@@ -100,6 +154,7 @@ class Visualizer {
       }
     } 
     lastBeat = beat;
+    */
 
     drawWaveforms();
     drawPoly(beat);
