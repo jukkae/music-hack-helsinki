@@ -274,7 +274,6 @@ void draw()
     
     //beats
     if ( sixteenth%4 == 0 ){
-      
         clock = millis();
         beat = (beat+1) % numberOfSteps;
         beatTriggered = false;
@@ -282,6 +281,23 @@ void draw()
       if(basslineGates[beat]){
         bassline.setFreq(convertNoteToFreq(basslineNotes[beat]));
         bassline.noteOn(1.0f);
+        
+        //trigger pad chord changes only when we have bass!
+        //Am
+        if(random(1)<0.3){
+          pad.setChord(2*convertNoteToFreq(0), 2*convertNoteToFreq(2), 2*convertNoteToFreq(4));
+          println("Am");
+        }
+        //Dm
+        if(random(1)<0.1){
+          pad.setChord(2*convertNoteToFreq(3), 2*convertNoteToFreq(5), 2*convertNoteToFreq(7));
+          println("Dm");
+        }
+        //Em
+        if(random(1)<0.01){
+          pad.setChord(2*convertNoteToFreq(1), 2*convertNoteToFreq(4), 2*convertNoteToFreq(6));
+          println("Em");
+        }
       }
       else bassline.noteOff();
     }
