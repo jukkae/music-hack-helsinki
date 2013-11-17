@@ -169,7 +169,7 @@ void mouseMoved()
   
   
   vis.setModAmt(modAmt);
-  //vis.setModFreq(modFreq);
+  vis.setModFreq(modFreq);
 }
 
 // Convert from note index (0-7) to Hz. Scale is currently A minor.
@@ -269,7 +269,10 @@ void draw()
     }
     else hihat.noteOff();
     
-    if(sixteenth%4==0)kick.noteOn(0.1);
+    if(sixteenth%4==0) { 
+      kick.noteOn(0.1);
+      vis.triggerKick();
+    }
     else kick.noteOff();
     
     //beats
