@@ -59,6 +59,7 @@ class BassLine implements Instrument
     fm.offset.setLastValue(freq);
   }
   
+  
   void noteOn(float f){
     gate.setValue(1.0f);
     adsr.noteOn();
