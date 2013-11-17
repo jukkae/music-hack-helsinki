@@ -67,11 +67,7 @@ void setup()
   
   
   mixer.patch( out );
-  
-  
-
-  
-  
+    
   // SEQUENCER VARIABLES
   // initialize bpm at 120
   bpm = 120;
@@ -93,6 +89,11 @@ void setup()
   
   tagReader = new TagReader();
   tagReader.init(this, "/dev/tty.usbserial-AH013H15");
+  
+  proximityReader = new ProximityReader();
+  proximityReader.init(this, "/dev/tty.usbmodem1411");
+  
+  thread("fetchSerial");
   
   // Visualizer
   vis = new Visualizer();
@@ -248,4 +249,16 @@ void draw()
   text(beat, width-400, height-120);
   text(clock, width-300, height-120);
   text(frameRate, width-120, height-120);
+}
+
+void fetchSerial() {
+  while(true) {
+    proximityReader.pollValue();
+    println(proximityReader.getLastValue());
+    try {
+      Thread.sleep(50);
+    } catch (InterruptedException e) {
+      println(e);
+    }
+  }
 }
