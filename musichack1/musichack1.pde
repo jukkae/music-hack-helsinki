@@ -99,7 +99,7 @@ void setup()
   vis = new Visualizer();
   vis.init(this, out, GeoKoneGlobals.DEF_CANVAS_WIDTH, GeoKoneGlobals.DEF_CANVAS_HEIGHT);
 }
-
+ 
 //fills the bassline notes with random values
 void makeBassline(){
   for (int i = 0; i < 16; i++){
